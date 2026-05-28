@@ -403,9 +403,9 @@ tbody tr {
 
 .heatmap-grid {
   display: grid;
-  grid-template-columns: 92px repeat(15, minmax(28px, 1fr));
+  grid-template-columns: 104px repeat(var(--year-count), minmax(34px, 1fr));
   gap: 4px;
-  min-width: 600px;
+  min-width: 560px;
 }
 
 .heatmap-cell,
@@ -429,6 +429,7 @@ tbody tr {
   padding-left: 2px;
   color: var(--text);
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .heatmap-cell {

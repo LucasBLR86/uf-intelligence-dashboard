@@ -2,7 +2,7 @@ const rawRecords = window.DASHBOARD_DATA.records;
 
 const metrics = {
   total_patentes: { label: "Patentes", short: "Patentes", format: fmtInt, aggregate: "sum" },
-  pib_bilhoes_reais: { label: "PIB", short: "PIB", format: fmtMoney, aggregate: "sum" },
+  pib_bilhoes_reais: { label: "PIB (R$ bi)", short: "PIB", format: fmtMoney, aggregate: "sum" },
   percentual_pib_pd: { label: "P&D / PIB", short: "P&D", format: fmtPct, aggregate: "avg" },
   idh: { label: "IDH", short: "IDH", format: fmt3, aggregate: "avg" },
   rendimento_per_capita: { label: "Renda per capita", short: "Renda", format: fmtMoneySmall, aggregate: "avg" },
@@ -12,7 +12,9 @@ const metrics = {
 };
 
 const regions = ["Todas", "Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"];
-const years = [...new Set(rawRecords.map((d) => d.ano))].sort((a, b) => a - b);
+const years = [...new Set(rawRecords.map((d) => d.ano))]
+  .filter((year) => year >= 2010 && year <= 2020)
+  .sort((a, b) => a - b);
 const states = [...new Set(rawRecords.map((d) => d.estado))].sort();
 let state = {
   year: Math.max(...years),
@@ -158,13 +160,14 @@ function resetFilters() {
 function selectedBaseRecords({ ignoreYear = false } = {}) {
   return rawRecords.filter((d) => {
     const matchesYear = ignoreYear || d.ano === state.year;
+    const matchesAllowedPeriod = years.includes(d.ano);
     const matchesRegion = state.region === "Todas" || d.regiao === state.region;
     const matchesState = state.selectedStates.size === 0 || state.selectedStates.has(d.estado);
     const matchesSearch =
       !state.search ||
       d.estado.toLowerCase().includes(state.search) ||
       d.regiao.toLowerCase().includes(state.search);
-    return matchesYear && matchesRegion && matchesState && matchesSearch;
+    return matchesAllowedPeriod && matchesYear && matchesRegion && matchesState && matchesSearch;
   });
 }
 
@@ -386,7 +389,7 @@ function renderHeatmap() {
     .join("");
 
   el.heatmapChart.innerHTML = `
-    <div class="heatmap-grid">${header}${body}</div>
+    <div class="heatmap-grid" style="--year-count:${years.length}">${header}${body}</div>
     ${state.metric === "idh" ? idhLegend() : continuousLegend()}`;
 
   el.heatmapChart.querySelectorAll("[data-region]").forEach((node) => {
@@ -567,7 +570,7 @@ function fmtInt(value) {
 
 function fmtMoney(value) {
   if (!value) return "R$ 0";
-  return `R$ ${new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(value / 1_000_000)} mi`;
+  return `R$ ${new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(value / 1_000_000)} bi`;
 }
 
 function fmtMoneySmall(value) {

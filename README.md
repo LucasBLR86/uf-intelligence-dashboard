@@ -1,6 +1,6 @@
 # UF Intelligence Dashboard
 
-Dashboard interativo em HTML, CSS e JavaScript para explorar indicadores estaduais do Brasil entre 2010 e 2024, com foco inicial em IDH.
+Dashboard interativo em HTML, CSS e JavaScript para explorar indicadores estaduais do Brasil entre 2010 e 2020, com foco inicial em IDH.
 
 ## O que tem
 
