@@ -570,7 +570,7 @@ function fmtInt(value) {
 
 function fmtMoney(value) {
   if (!value) return "R$ 0";
-  return `R$ ${new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(value / 1_000_000)} bi`;
+  return `R$ ${new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(value / 1_000_000)}`;
 }
 
 function fmtMoneySmall(value) {
