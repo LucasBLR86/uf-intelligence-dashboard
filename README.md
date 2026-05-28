@@ -40,3 +40,4 @@ Depois de subir o repositorio no GitHub:
 3. Em `Build and deployment`, escolha `Deploy from a branch`.
 4. Selecione a branch `main` e a pasta `/root`.
 5. Salve e aguarde o link publicado.
+6. https://lucasblr86.github.io/uf-intelligence-dashboard/
